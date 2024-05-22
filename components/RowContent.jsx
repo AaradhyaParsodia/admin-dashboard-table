@@ -4,8 +4,9 @@ export default function RowContent({ bookData, authorData }) {
     return <>
         <tbody>
         {/* {console.log(authorData["OL18053A"].birth_date)} */}
+        {console.log("rerender")}
             {bookData.map((book) => {
-                    console.log(authorData);
+                    // console.log(authorData);
                     const authorKey = book.author_key[0].replace('/authors/', '');
                     // console.log(`Author Key: ${authorKey}`);
                     const author = authorData[`/authors/${authorKey}`];
@@ -18,7 +19,7 @@ export default function RowContent({ bookData, authorData }) {
                         >
                             {(book.title)}
                         </th>
-                        <td className="px-6 py-4">{author ? author.name : 'Unknown'}</td>
+                        <td className="px-6 py-4">{author ? author.name : book.author_name[0]}</td>
                         <td className="px-6 py-4">{book.first_publish_year}</td>
                         <td className="px-6 py-4">{book.ratings_average}</td>
                         <td className="px-6 py-4">{author ? author.birth_date : 'Unknown'}</td>

@@ -58,61 +58,45 @@ function App() {
         },
     ];
 
-    const [limit, setLimit] = useState(20);
+    const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(10);
     const [data, setData] = useState({ books: [], authors: {} });
-    const [books, setBooks] = useState([]);
-    const [authors, setAuthors] = useState([]);
+    // const [books, setBooks] = useState([]);
+    // const [authors, setAuthors] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const getBookData = async () => {
+    const fetchData = async () => {
         try {
-            const response = await axios.get(`https://openlibrary.org/search.json?q=*&has_fulltext=true&limit=${limit}&offset=${offset}`);
+            const bookResponse = await axios.get(`https://openlibrary.org/search.json?q=*&has_fulltext=true&limit=${limit}&offset=${offset}`);
+            const bookData = bookResponse.data.docs;
 
-            const resData = response.data.docs;
-            // console.log(resData);
-            setBooks(resData);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const getAuthorData = async () => {
-        try {
-            // const response = await axios.get(`https://openlibrary.org/search.json?q=*&has_fulltext=true&limit=${limit}&offset=${offset}`);
-
-            // const resData = response.data.docs;
-            
-            const authorKeys = books.map(book => book.author_key);
+            const authorKeys = bookData.map(book => book.author_key);
             const authorResponses = await Promise.all(authorKeys.map(key => fetch(`https://openlibrary.org/authors/${key}.json?works=true`)));
             const authorData = await Promise.all(authorResponses.map(response => response.json()));
-            setAuthors(authorData.reduce((acc, author) => ({ ...acc, [author.key]: author }), {}));
-            
+
+            setData({ books: bookData, authors: authorData.reduce((acc, author) => ({ ...acc, [author.key]: author }), {}) });
             setLoading(true);
-            // console.log(authors);
-            
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
-        getBookData();
-        // getAuthorData();
+        fetchData();
     }, [limit, offset]);
 
-    useEffect(() => {
-        if(books.length > 0) {
-            getAuthorData();
-        }
-    }, [books]);
+    // useEffect(() => {
+    //     if (books.length > 0) {
+    //         getAuthorData();
+    //     }
+    // }, [books]);
 
     return (
         <>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <ColumnHead columnContent={columnsContent}></ColumnHead>
-                    {loading ? <RowContent authorData={authors} bookData={books}></RowContent> : <tbody>Please Wait While Fetching the data</tbody>}
+                    {loading ? <RowContent authorData={data.authors} bookData={data.books}></RowContent> : <tbody>Please Wait While Fetching the data</tbody>}
                 </table>
             </div>
         </>
