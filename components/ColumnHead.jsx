@@ -1,12 +1,12 @@
-export default function Column({ tableHead }) {
+export default function Column({ columnContent }) {
     return (
         <>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    {tableHead.map((value) => 
-                        <th scope="col" className="px-6 py-3">
+                    {columnContent.map((value) => 
+                        <th key={value.accessor} scope="col" className="px-6 py-3">
                             <div className="flex items-center">
-                                {value}
+                                {value.Header}
                                 <a href="#">
                                     <svg
                                         className="w-3 h-3 ms-1.5"
@@ -27,7 +27,7 @@ export default function Column({ tableHead }) {
                     </th>
                     {/* <th scope="col" className="px-6 py-3">
                         <div className="flex items-center">
-                            {tableHead[0]}
+                            {columnContent[0]}
                             <a href="#">
                                 <svg
                                     className="w-3 h-3 ms-1.5"
@@ -43,7 +43,7 @@ export default function Column({ tableHead }) {
                     </th>
                     <th scope="col" className="px-6 py-3">
                         <div className="flex items-center">
-                            {tableHead[1]}
+                            {columnContent[1]}
                             <a href="#">
                                 <svg
                                     className="w-3 h-3 ms-1.5"
@@ -59,7 +59,7 @@ export default function Column({ tableHead }) {
                     </th>
                     <th scope="col" className="px-6 py-3">
                         <div className="flex items-center">
-                            {tableHead[2]}
+                            {columnContent[2]}
                             <a href="#">
                                 <svg
                                     className="w-3 h-3 ms-1.5"
