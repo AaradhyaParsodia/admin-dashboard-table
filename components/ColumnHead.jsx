@@ -5,7 +5,7 @@ export default function Column({ columnContent }) {
                 <tr>
                     {columnContent.map((value) => 
                         <th key={value.accessor} scope="col" className="px-6 py-3">
-                            <div className="flex items-center">
+                            <div className=" text-sm text-gray-900 whitespace-nowrap dark:text-white flex items-center">
                                 {value.Header}
                                 <a href="#">
                                     <svg
