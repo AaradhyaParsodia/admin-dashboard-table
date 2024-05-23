@@ -68,7 +68,7 @@ function App() {
     ];
 
     const [limit, setLimit] = useState(10);
-    const [offset, setOffset] = useState(10);
+    const [offset, setOffset] = useState(0);
     const [data, setData] = useState({ books: [], authors: {} });
     // const [books, setBooks] = useState([]);
     // const [authors, setAuthors] = useState([]);
@@ -86,12 +86,12 @@ function App() {
             // console.log("book data "+bookData)
 
             // setNumFound(2000);
-            
+
             const authorKeys = bookData.map(book => book.author_key);
-            console.log("author key "+authorKeys[0]);
-            
+            console.log("author key " + authorKeys[0]);
+
             const authorPromises = authorKeys.map(key => fetch(`https://openlibrary.org/authors/${key[0]}.json?works=true`));
-            
+
             const authorResponses = await Promise.all(authorPromises);
             const authorData = await Promise.all(authorResponses.map(response => response.json()));
             console.log(authorData[0].birth_date);
@@ -111,9 +111,9 @@ function App() {
     useEffect(() => {
         fetchData();
         console.log("In UseEffect")
-        // return () => {
-        //     setLoading(false);
-        // };
+        return () => {
+            setLoading(false);
+        };
     }, [limit, offset]);
 
     // useEffect(() => {
@@ -140,7 +140,7 @@ function App() {
         // setPage(1);
     }
 
-    
+
 
     function getSortedArray(arrayToSort) {
         const dataArray = Object.values(arrayToSort);
@@ -149,6 +149,22 @@ function App() {
         }
         return dataArray.sort((a, b) => (a[sort.keyToSort] > b[sort.keyToSort] ? -1 : 1));
     }
+
+    const handlePrevPage = () => {
+        if (offset <= 0) {
+            return;
+        }
+
+        setOffset(offset - limit);
+    };
+
+    const handleNextPage = () => {
+        if (offset + limit >= numFound) {
+            return;
+        }
+
+        setOffset(offset + limit);
+    };
 
     return (
         <div className="">
@@ -197,26 +213,32 @@ function App() {
             </div>
             <div className="flex justify-evenly">
 
-                <select 
-                    defaultValue={10} 
-                    onChange={selectionHandler} 
-                    id="entryCount" 
+                <select
+                    defaultValue={10}
+                    onChange={selectionHandler}
+                    id="entryCount"
                     className="bg-gray-50 border m-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                    
+
                     <option value="10">10</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                {/* https://youtu.be/ran0d8WHTYs?si=JLhehhoArH4bCWF1 */}
-                <div id="container">
-                    <Pagination
-                        currentPage = {currentPage}
-                        total= {numFound}
-                        limit= {limit}
-                        onPageChange= {(page)=> setCurrentPage(page)}
-                    ></Pagination>
+                <div className="flex" id="container">
+                    {/* <Pagination
+                        currentPage={currentPage}
+                        total={numFound}
+                        limit={limit}
+                        onPageChange={(page) => setCurrentPage(page)}
+                    ></Pagination> */}
+                    <button className="flex m-2 items-center justify-center px-4 h-10 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" 
+                        onClick={handlePrevPage}
+                    >
+                        Previous Page
+                    </button>
+                    <button className="flex m-2 items-center justify-center px-4 h-10 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" onClick={handleNextPage}>Next Page</button>
                 </div>
+
             </div>
         </div>
     );
