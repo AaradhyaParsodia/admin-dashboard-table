@@ -11,6 +11,9 @@ export default function RowContent({ bookData, authorData }) {
                     // console.log(`Author Key: ${authorKey}`);
                     const author = authorData[`/authors/${authorKey}`];
                     // console.log(`Author Data: ${author}`);
+                    // if (!author) {
+                    //     console.log(`Author not found: ${authorKey}`);
+                    // }
                     return (
                     <tr key={index} className="bg-white border-b text-wrap dark:bg-gray-800 dark:border-gray-700">
                         <th
