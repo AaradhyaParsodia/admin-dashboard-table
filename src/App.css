@@ -7,3 +7,14 @@ th svg.asc{
 th svg.desc{
   transform: rotate(180deg);
 }
+
+body{
+  background: rgb(238,174,202);
+  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}
+
+.backgroundShadow{
+  -webkit-box-shadow: 0 0 6px 4px #afafaf;
+-moz-box-shadow: 0 0 6px 4px #afafaf;
+box-shadow: 0 0 6px 4px #afafaf;
+}

@@ -222,7 +222,7 @@ function App() {
                 </button>
             </form>
             <div className="">
-                <div className="relative mx-20 my-4 overflow-x-auto shadow-md sm:rounded-lg">
+                <div className="backgroundShadow relative mx-20 my-4 overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
